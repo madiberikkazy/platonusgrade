@@ -342,7 +342,7 @@ input[type="range"] { width: 100%; accent-color: var(--blue); }
 .selection-copy span { margin-top: 3px; color: var(--muted); font-size: 9px; }
 .inline-score { height: 42px; display: grid; place-items: center; border: 1px solid var(--line); background: #f7f7f3; border-radius: 12px; }
 .inline-score input { width: 100%; border: 0; outline: 0; background: transparent; text-align: center; color: var(--ink); font-weight: 850; }
-.quick-actions { display: grid; grid-template-columns: repeat(4, 48px); gap: 6px; }
+.quick-actions { display: grid; grid-template-columns: repeat(2, 58px); gap: 6px; }
 .quick-actions button, .clear-cell {
   height: 42px;
   border: 1px solid var(--line);
@@ -386,7 +386,7 @@ input[type="range"] { width: 100%; accent-color: var(--blue); }
   .quick-toolbar { top: 7px; grid-template-columns: 84px 1fr 32px; gap: 7px; border-radius: 18px; }
   .selection-copy { grid-column: 1 / -1; }
   .inline-score { height: 39px; }
-  .quick-actions { grid-template-columns: repeat(4, 1fr); }
+  .quick-actions { grid-template-columns: repeat(2, 1fr); }
   .quick-actions button { height: 39px; padding: 0 5px; }
   .clear-cell { width: 32px; height: 39px; }
   .activity-icon { display: none; }

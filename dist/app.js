@@ -244,26 +244,38 @@ function parseScoresFromOCR(text) {
   const clean = text.replace(/[|]/g, 'I').replace(/,/g, '.');
   const blocks = [...clean.matchAll(/(?:AT|АТ)\s*[\w\d-]*-(SRSP|СРСП|L|P|Р)([\s\S]*?)(?=(?:AT|АТ)\s*[\w\d-]*-(?:SRSP|СРСП|L|P|Р)|$)/gi)];
   let found = 0;
+  const parsedByActivity = new Map();
   for (const match of blocks) {
     const suffix = match[1].toUpperCase();
     const id = suffix === 'L' ? 'lecture' : (suffix === 'SRSP' || suffix === 'СРСП') ? 'srsp' : 'practice';
     const activity = state.activities.find(a => a.id === id);
     if (!activity) continue;
+    const parsed = parsedByActivity.get(id) || { scores: Array(15).fill(null), count: 0 };
+    parsedByActivity.set(id, parsed);
     const lines = match[2].split(/\n+/).map(s => s.trim()).filter(Boolean);
     const scoreLines = lines.filter(line => /(?:оценка|баға)/i.test(line));
     scoreLines.slice(0, 2).forEach((line, rowIndex) => {
-      let tokens = line.replace(/^.*?(?:оценка|баға)\s*/i, '').match(/н\.?\s*[пб]\.?|\b(?:100|[1-9]?\d)(?:\.\d+)?\b|[+-]/gi) || [];
+      let tokens = line.replace(/^.*?(?:оценка|баға)\s*/i, '').match(/н\.?\s*[пб]\.?|\b(?:100|[1-9]?\d)(?:\.\d+)?\b|\b[OoОо]\b|[+-]/gi) || [];
       tokens = tokens.map(x => x.replace(/\s/g, '').toLowerCase());
+      // Platonus appends the period TK average (for example 85.00 or 10.00)
+      // after weekly grades. It is a result, not the next week's score.
+      if (tokens.length && /\.\d+$/.test(tokens[tokens.length - 1])) tokens.pop();
       const limit = rowIndex === 0 ? 7 : 8;
       if (tokens.length > limit) tokens = tokens.slice(0, limit);
       tokens.forEach((token, i) => {
-        const normalized = /^н\.?п/.test(token) ? 'н.п.' : /^н\.?б/.test(token) ? 'н.б.' : token === '+' || token === '-' ? token : Number(token);
+        const normalized = /^н\.?п/.test(token) ? 'н.п.' : /^н\.?б/.test(token) ? 'н.б.' : token === '+' || token === '-' ? token : /^[oо]$/i.test(token) ? 0 : Number(token);
         if (typeof normalized === 'number' && (normalized < 0 || normalized > 100)) return;
-        activity.scores[(rowIndex === 0 ? 0 : 7) + i] = normalized;
+        parsed.scores[(rowIndex === 0 ? 0 : 7) + i] = normalized;
+        parsed.count++;
         found++;
       });
     });
   }
+  parsedByActivity.forEach((parsed, id) => {
+    if (!parsed.count) return;
+    const activity = state.activities.find(a => a.id === id);
+    if (activity) activity.scores = parsed.scores;
+  });
   return found;
 }
 
@@ -272,7 +284,8 @@ async function scanImage() {
   const btn = $('#scanButton'); btn.disabled = true;
   $('#scanStatus').textContent = t('scanning');
   try {
-    const { createWorker } = await import('https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.esm.min.js');
+    const tesseractModule = await import('https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.esm.min.js');
+    const { createWorker } = tesseractModule.default;
     const worker = await createWorker('rus+eng', 1, { logger: m => {
       if (m.progress != null) {
         const pct = Math.round(m.progress * 100); $('#scanPercent').textContent = `${pct}%`; $('#progressBar').style.width = `${pct}%`;
