@@ -13,11 +13,11 @@ const translations = {
     liveResult: 'Нәтиже • LIVE', autoSaved: 'сақталды', finalGrade: 'Қорытынды баға', firstPeriod: 'Бірінші кезең', secondPeriod: 'Екінші кезең',
     currentTotal1: 'ТК1 жалпы', currentTotal2: 'ТК2 жалпы', boundary1: 'Межелік бақылау 1', boundary2: 'Межелік бақылау 2', rating1: 'Рейтинг 1', rating2: 'Рейтинг 2',
     admission: 'Рұқсат рейтингі', goalTitle: 'Мақсат: B+ (85)', goalEmpty: 'Бағаларды толтырған соң, қажетті емтихан балы шығады.', calculate: 'Нәтижені есептеу', rounding: 'Нәтиже жақын бүтін санға дөңгелектенеді.',
-    week: 'апта', quickMarks: 'Жылдам белгілер', npDesc: 'қатыспады', nbDesc: 'бағаланбады', minusDesc: '0 балл', plusDesc: '100 балл', delete: 'Өшіру', save: 'Сақтау',
+    week: 'апта', quickMarks: 'Жылдам белгілер', npDesc: 'есептелмейді', nbDesc: '0 балл', minusDesc: '0 балл', plusDesc: '100 балл', delete: 'Өшіру', save: 'Сақтау',
     uploadTitle: 'Platonus скриншоты', uploadStep1: 'Журнал толық көрінетін скриншотты таңдаңыз.', uploadStep2: 'ЖИ тапқан бағаларды тексеріп, қолданыңыз.', chooseImage: 'Суретті таңдаңыз', privacy: 'Скриншот серверге жіберілмейді — браузерде өңделеді.', cancel: 'Бас тарту', scan: 'Бағаларды тану',
-    guide: 'Қысқа нұсқаулық', howWorks: 'Қалай жұмыс істейді?', guide1Title: 'Бағаларды енгізіңіз', guide1Text: 'Аптаны басып, 0–100 балл немесе н.п., н.б., −, + белгісін таңдаңыз.',
+    guide: 'Қысқа нұсқаулық', howWorks: 'Қалай жұмыс істейді?', guide1Title: 'Бағаларды енгізіңіз', guide1Text: 'Аптаны басып, 0–100 балл немесе н.п., н.б., н, н.я., ж белгісін таңдаңыз.',
     guide2Title: 'РК мен емтиханды көрсетіңіз', guide2Text: 'РК әлі шықпаса, бос қалдырыңыз. Калькулятор болжам жасайды.', guide3Title: 'Нәтижені қараңыз', guide3Text: 'Рейтинг, қорытынды баға, әріптік баға және GPA бірден жаңарады.',
-    npLegend: 'қатыспады, орташаға кірмейді', nbLegend: 'бағаланбады, орташаға кірмейді', pmLegend: '0 / 100 балл ретінде есептеледі', understood: 'Түсінікті, бастайық',
+    npLegend: 'қарастырылмаған, орташаға кірмейді', nbLegend: 'н.б., н, н.я., ж — 0 балл', pmLegend: '0 / 100 балл ретінде есептеледі', understood: 'Түсінікті, бастайық',
     lecture: 'Лекция', practice: 'Практика', srsp: 'СРСП', laboratory: 'Зертханалық', avg: 'Орташа', entered: 'баға енгізілді', remove: 'Жою',
     rk1: 'Межелік бақылау 1', rk2: 'Межелік бақылау 2', forecast: 'болжам', ready: 'Есептеуге дайын', enterGrades: 'Апталық бағаларды енгізіңіз.',
     admitted: 'Емтиханға жіберіледі', admissionGood: 'Рұқсат рейтингі 50 балдан жоғары.', notAdmitted: 'Рұқсат рейтингі жеткіліксіз', admissionLow: 'Емтиханға рұқсат алу үшін кемінде 50 балл қажет.',
@@ -36,11 +36,11 @@ const translations = {
     liveResult: 'Результат • LIVE', autoSaved: 'сохранено', finalGrade: 'Итоговая оценка', firstPeriod: 'Первый период', secondPeriod: 'Второй период',
     currentTotal1: 'ТК1 общий', currentTotal2: 'ТК2 общий', boundary1: 'Рубежный контроль 1', boundary2: 'Рубежный контроль 2', rating1: 'Рейтинг 1', rating2: 'Рейтинг 2',
     admission: 'Рейтинг допуска', goalTitle: 'Цель: B+ (85)', goalEmpty: 'После заполнения оценок покажем нужный балл за экзамен.', calculate: 'Рассчитать результат', rounding: 'Результат округляется до ближайшего целого.',
-    week: 'неделя', quickMarks: 'Быстрые отметки', npDesc: 'не посещал', nbDesc: 'не оценён', minusDesc: '0 баллов', plusDesc: '100 баллов', delete: 'Удалить', save: 'Сохранить',
+    week: 'неделя', quickMarks: 'Быстрые отметки', npDesc: 'не предусмотрено', nbDesc: '0 баллов', minusDesc: '0 баллов', plusDesc: '100 баллов', delete: 'Удалить', save: 'Сохранить',
     uploadTitle: 'Скриншот Platonus', uploadStep1: 'Выберите скриншот, где полностью виден журнал.', uploadStep2: 'Проверьте распознанные ИИ оценки и примените их.', chooseImage: 'Выберите изображение', privacy: 'Скриншот не отправляется на сервер — обработка идёт в браузере.', cancel: 'Отмена', scan: 'Распознать оценки',
-    guide: 'Краткая инструкция', howWorks: 'Как это работает?', guide1Title: 'Введите оценки', guide1Text: 'Нажмите на неделю и выберите балл 0–100 или отметку н.п., н.б., −, +.',
+    guide: 'Краткая инструкция', howWorks: 'Как это работает?', guide1Title: 'Введите оценки', guide1Text: 'Нажмите на неделю и выберите балл 0–100 или отметку н.п., н.б., н, н.я., ж.',
     guide2Title: 'Укажите РК и экзамен', guide2Text: 'Если РК ещё нет, оставьте поле пустым. Калькулятор сделает прогноз.', guide3Title: 'Смотрите результат', guide3Text: 'Рейтинги, итоговая оценка, буква и GPA обновляются сразу.',
-    npLegend: 'не посещал, не входит в среднее', nbLegend: 'не оценён, не входит в среднее', pmLegend: 'считаются как 0 / 100 баллов', understood: 'Понятно, начнём',
+    npLegend: 'не предусмотрено, не входит в среднее', nbLegend: 'н.б., н, н.я., ж — это 0 баллов', pmLegend: 'считаются как 0 / 100 баллов', understood: 'Понятно, начнём',
     lecture: 'Лекция', practice: 'Практика', srsp: 'СРСП', laboratory: 'Лабораторная', avg: 'Среднее', entered: 'оценок введено', remove: 'Удалить',
     rk1: 'Рубежный контроль 1', rk2: 'Рубежный контроль 2', forecast: 'прогноз', ready: 'Готово к расчёту', enterGrades: 'Введите оценки по неделям.',
     admitted: 'Допуск к экзамену есть', admissionGood: 'Рейтинг допуска выше 50 баллов.', notAdmitted: 'Рейтинга недостаточно', admissionLow: 'Для допуска к экзамену нужно не менее 50 баллов.',
@@ -98,6 +98,8 @@ function translatePage() {
 
 function scoreToNumber(value) {
   if (typeof value === 'number') return clamp(value);
+  if (value === 'н.п.') return null;
+  if (['н.б.', 'н', 'н.я.', 'ж'].includes(value)) return 0;
   if (value === '+') return 100;
   if (value === '-') return 0;
   return null;
@@ -255,7 +257,7 @@ function parseScoresFromOCR(text) {
     const lines = match[2].split(/\n+/).map(s => s.trim()).filter(Boolean);
     const scoreLines = lines.filter(line => /(?:оценка|баға)/i.test(line));
     scoreLines.slice(0, 2).forEach((line, rowIndex) => {
-      let tokens = line.replace(/^.*?(?:оценка|баға)\s*/i, '').match(/н\.?\s*[пб]\.?|\b(?:100|[1-9]?\d)(?:\.\d+)?\b|\b[OoОо]\b|[+-]/gi) || [];
+      let tokens = line.replace(/^.*?(?:оценка|баға)\s*/i, '').match(/н\.?\s*[пбя]\.?|[нnж]\.?|(?:100|[1-9]?\d)(?:\.\d+)?|[OoОо]|[+-]/gi) || [];
       tokens = tokens.map(x => x.replace(/\s/g, '').toLowerCase());
       // Platonus appends the period TK average (for example 85.00 or 10.00)
       // after weekly grades. It is a result, not the next week's score.
@@ -263,7 +265,14 @@ function parseScoresFromOCR(text) {
       const limit = rowIndex === 0 ? 7 : 8;
       if (tokens.length > limit) tokens = tokens.slice(0, limit);
       tokens.forEach((token, i) => {
-        const normalized = /^н\.?п/.test(token) ? 'н.п.' : /^н\.?б/.test(token) ? 'н.б.' : token === '+' || token === '-' ? token : /^[oо]$/i.test(token) ? 0 : Number(token);
+        const normalized = /^н\.?п/.test(token) ? 'н.п.'
+          : /^н\.?б/.test(token) ? 'н.б.'
+          : /^н\.?я/.test(token) ? 'н.я.'
+          : /^[нn]\.?$/i.test(token) ? 'н'
+          : /^ж$/i.test(token) ? 'ж'
+          : token === '+' || token === '-' ? token
+          : /^[oо]$/i.test(token) ? 0
+          : Number(token);
         if (typeof normalized === 'number' && (normalized < 0 || normalized > 100)) return;
         parsed.scores[(rowIndex === 0 ? 0 : 7) + i] = normalized;
         parsed.count++;

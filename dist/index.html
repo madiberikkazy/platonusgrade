@@ -27,8 +27,11 @@
             <div class="selection-copy"><strong id="selectionTitle" data-i18n="selectWeek">Алдымен аптаны таңдаңыз</strong><span data-i18n="selectHint">Сосын бағаны немесе белгіні басыңыз</span></div>
             <label class="inline-score"><input id="inlineScore" type="number" inputmode="decimal" min="0" max="100" placeholder="0–100" aria-label="Баға 0-ден 100-ге дейін" /></label>
             <div class="quick-actions">
-              <button type="button" data-quick-mark="н.п.">н.п.</button>
-              <button type="button" data-quick-mark="н.б.">н.б.</button>
+              <button class="skip-mark" type="button" data-quick-mark="н.п.">н.п.</button>
+              <button class="zero-mark" type="button" data-quick-mark="н.б.">н.б.</button>
+              <button class="zero-mark" type="button" data-quick-mark="н">н</button>
+              <button class="zero-mark" type="button" data-quick-mark="н.я.">н.я.</button>
+              <button class="zero-mark" type="button" data-quick-mark="ж">ж</button>
             </div>
             <button class="clear-cell" id="clearCell" aria-label="Таңдалған бағаны өшіру">×</button>
           </section>
@@ -107,20 +110,6 @@
       </div>
     </main>
 
-    <dialog id="scoreDialog" class="modal score-modal">
-      <form method="dialog">
-        <div class="modal-handle"></div>
-        <div class="modal-head"><div><span id="scoreDialogType">Лекция</span><h3><span id="scoreDialogWeek">1</span> <span data-i18n="week">апта</span></h3></div><button class="close-button" value="cancel" aria-label="Жабу">×</button></div>
-        <label class="big-score-input"><input id="scoreValue" type="number" min="0" max="100" inputmode="decimal" placeholder="0–100" /><span>/100</span></label>
-        <div class="quick-label" data-i18n="quickMarks">Жылдам белгілер</div>
-        <div class="quick-grid">
-          <button type="button" data-mark="н.п."><b>н.п.</b><small data-i18n="npDesc">қатыспады</small></button>
-          <button type="button" data-mark="н.б."><b>н.б.</b><small data-i18n="nbDesc">бағаланбады</small></button>
-        </div>
-        <div class="modal-actions"><button type="button" class="ghost-button" id="deleteScore" data-i18n="delete">Өшіру</button><button type="button" class="primary-button" id="saveScore" data-i18n="save">Сақтау</button></div>
-      </form>
-    </dialog>
-
     <dialog id="uploadDialog" class="modal upload-modal">
       <div class="modal-handle"></div>
       <div class="modal-head"><div><h3 data-i18n="uploadTitle">Platonus скриншоты</h3></div><button class="close-button" data-close="upload" aria-label="Жабу">×</button></div>
@@ -139,11 +128,11 @@
       <div class="modal-handle"></div>
       <div class="modal-head"><div><span data-i18n="guide">Қысқа нұсқаулық</span><h3 data-i18n="howWorks">Қалай жұмыс істейді?</h3></div><button class="close-button" data-close="help" aria-label="Жабу">×</button></div>
       <div class="guide-list">
-        <article><span>01</span><div><strong data-i18n="guide1Title">Бағаларды енгізіңіз</strong><p data-i18n="guide1Text">Аптаны басып, 0–100 балл немесе н.п., н.б., −, + белгісін таңдаңыз.</p></div></article>
+        <article><span>01</span><div><strong data-i18n="guide1Title">Бағаларды енгізіңіз</strong><p data-i18n="guide1Text">Аптаны басып, 0–100 балл немесе н.п., н.б., н, н.я., ж белгісін таңдаңыз.</p></div></article>
         <article><span>02</span><div><strong data-i18n="guide2Title">РК мен емтиханды көрсетіңіз</strong><p data-i18n="guide2Text">РК әлі шықпаса, бос қалдырыңыз. Калькулятор болжам жасайды.</p></div></article>
         <article><span>03</span><div><strong data-i18n="guide3Title">Нәтижені қараңыз</strong><p data-i18n="guide3Text">Рейтинг, қорытынды баға, әріптік баға және GPA бірден жаңарады.</p></div></article>
       </div>
-      <div class="legend"><div><b>н.п.</b><span data-i18n="npLegend">қатыспады, орташаға кірмейді</span></div><div><b>н.б.</b><span data-i18n="nbLegend">бағаланбады, орташаға кірмейді</span></div></div>
+      <div class="legend"><div><b>н.п.</b><span data-i18n="npLegend">қарастырылмаған, орташаға кірмейді</span></div><div><b>н.б. · н · н.я. · ж</b><span data-i18n="nbLegend">0 балл ретінде есептеледі</span></div></div>
       <button class="primary-button full-button" data-close="help" data-i18n="understood">Түсінікті, бастайық</button>
     </dialog>
 
