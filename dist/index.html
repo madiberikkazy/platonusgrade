@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="kk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#121d34" />
+    <meta name="description" content="Platonus бағаларын есептейтін қазақша/орысша ақылды калькулятор" />
+    <title>BAGA — Platonus калькуляторы</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="BAGA — басты бет">
+        <span class="brand-mark">B</span>
+        <span class="brand-copy"><strong>BAGA</strong><small data-i18n="brandSub">Platonus калькуляторы</small></span>
+      </a>
+      <div class="top-actions">
+        <button class="icon-button" id="helpButton" aria-label="Көмек" title="Көмек">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M9.8 9a2.35 2.35 0 1 1 3.77 1.88c-.95.72-1.57 1.1-1.57 2.12"></path><path d="M12 17h.01"></path></svg>
+        </button>
+        <button class="lang-switch" id="langSwitch" aria-label="Тілді ауыстыру"><span class="active">ҚАЗ</span><span>РУС</span></button>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section class="intro">
+        <div>
+          <p class="eyebrow"><span class="pulse-dot"></span><span data-i18n="eyebrow">Студентке арналған ақылды құрал</span></p>
+          <h1 data-i18n="title">Бағаңды алдын ала біл.</h1>
+          <p class="intro-text" data-i18n="intro">Апталық бағаларды енгіз немесе Platonus скриншотын жүкте. Қалғанын біз есептейміз.</p>
+        </div>
+        <div class="semester-pill"><span data-i18n="semester">15 апта</span><b>•</b><span data-i18n="savedLocal">Құрылғыда сақталады</span></div>
+      </section>
+
+      <div class="workspace">
+        <div class="main-column">
+          <section class="ai-card panel">
+            <div class="ai-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32"><path d="M5.5 10.5A3.5 3.5 0 0 1 9 7h4l1.4-2h4L20 7h3a3.5 3.5 0 0 1 3.5 3.5v12A3.5 3.5 0 0 1 23 26H9a3.5 3.5 0 0 1-3.5-3.5z"></path><circle cx="16" cy="16.5" r="5"></circle><path d="m26 4 .7 2.3L29 7l-2.3.7L26 10l-.7-2.3L23 7l2.3-.7z"></path></svg>
+            </div>
+            <div class="ai-copy">
+              <div class="badge">AI BETA</div>
+              <h2 data-i18n="aiTitle">Скриншоттан автоматты толтыру</h2>
+              <p data-i18n="aiText">Журнал скриншотын жүктеңіз — бағалар құрылғыңызда танылады.</p>
+            </div>
+            <button class="primary-button" id="openUpload">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"></path><path d="M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"></path></svg>
+              <span data-i18n="uploadButton">Скриншот жүктеу</span>
+            </button>
+          </section>
+
+          <section class="course-head">
+            <div>
+              <div class="section-label"><span data-i18n="courseLabel">Пән</span><button class="mini-help" data-tip="course">?</button></div>
+              <input id="courseName" class="course-input" value="AR/VR технологиялары" aria-label="Пән атауы" />
+            </div>
+            <button class="ghost-button danger-ghost" id="resetButton">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3m3 0-1 13H7L6 7"></path></svg>
+              <span data-i18n="clear">Тазарту</span>
+            </button>
+          </section>
+
+          <div class="period-tabs" role="tablist" aria-label="Бақылау кезеңі">
+            <button class="period-tab active" data-period="1" role="tab"><span data-i18n="period1">1-межелік кезең</span><small>1–7 <span data-i18n="weeks">апта</span></small></button>
+            <button class="period-tab" data-period="2" role="tab"><span data-i18n="period2">2-межелік кезең</span><small>8–15 <span data-i18n="weeks">апта</span></small></button>
+          </div>
+
+          <div id="activityList" class="activity-list"></div>
+
+          <button class="add-activity" id="addActivity">
+            <span>+</span><span data-i18n="addActivity">Сабақ түрін қосу</span>
+          </button>
+
+          <section class="control-card panel">
+            <div class="control-head">
+              <div>
+                <div class="section-label"><span id="rkLabel">Межелік бақылау 1</span><button class="mini-help" data-tip="rk">?</button></div>
+                <p data-i18n="rkHint">Баға әлі жоқ болса, бос қалдырыңыз — болжам автоматты есептеледі.</p>
+              </div>
+              <label class="score-field"><input id="rkInput" type="number" inputmode="decimal" min="0" max="100" placeholder="—" /><span>/ 100</span></label>
+            </div>
+          </section>
+
+          <section class="exam-card panel">
+            <div>
+              <div class="section-label"><span data-i18n="examLabel">Емтихан бағасы</span><button class="mini-help" data-tip="exam">?</button></div>
+              <h3 data-i18n="examQuestion">Емтиханнан қанша алуды жоспарлайсыз?</h3>
+            </div>
+            <div class="range-wrap">
+              <input id="examRange" type="range" min="0" max="100" value="85" />
+              <label class="range-value"><input id="examInput" type="number" min="0" max="100" value="85" /><span>/100</span></label>
+            </div>
+          </section>
+
+          <details class="settings panel" id="formulaSettings">
+            <summary><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06-2.12 2.12-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V20h-3v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06-2.12-2.12.06-.06A1.65 1.65 0 0 0 7.2 15a1.65 1.65 0 0 0-1.51-1H5.6v-3h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06L8.93 6l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V4.8h3v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33L18.7 6l2.12 2.12-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H22v3h-.09A1.65 1.65 0 0 0 20.4 15z"></path></svg><span data-i18n="formulaSettings">Формула баптаулары</span></span><span class="chevron">⌄</span></summary>
+            <div class="settings-body">
+              <div class="formula-note"><strong data-i18n="profileTitle">Жетісу университеті профилі</strong><p data-i18n="profileText">Рейтингте ТК — 60%, межелік бақылау — 40%. Қорытындыда рұқсат рейтингі — 60%, емтихан — 40%.</p></div>
+              <div class="weight-grid">
+                <label><span data-i18n="currentWeight">ТК салмағы</span><span><input id="currentWeight" type="number" min="0" max="100" value="60" />%</span></label>
+                <label><span data-i18n="rkWeight">РК салмағы</span><span><input id="rkWeight" type="number" min="0" max="100" value="40" />%</span></label>
+                <label><span data-i18n="admissionWeight">Рұқсат рейтингі</span><span><input id="admissionWeight" type="number" min="0" max="100" value="60" />%</span></label>
+                <label><span data-i18n="examWeight">Емтихан</span><span><input id="examWeight" type="number" min="0" max="100" value="40" />%</span></label>
+              </div>
+              <p class="settings-foot" data-i18n="settingsFoot">Ескерту: Platonus формуласы ЖОО мен силлабусқа қарай өзгеруі мүмкін. Күмән болса, эдвайзерден нақтылаңыз.</p>
+            </div>
+          </details>
+        </div>
+
+        <aside class="result-column">
+          <section class="result-card">
+            <div class="result-topline"><span data-i18n="liveResult">Нәтиже • LIVE</span><span class="autosave"><i></i><span data-i18n="autoSaved">сақталды</span></span></div>
+            <div class="score-hero">
+              <div class="score-ring" id="scoreRing"><div><strong id="finalScore">—</strong><span>/100</span></div></div>
+              <div class="grade-copy"><span data-i18n="finalGrade">Қорытынды баға</span><strong id="letterGrade">—</strong><small><span>GPA</span><b id="gpaScore">—</b></small></div>
+            </div>
+            <div class="status-banner" id="statusBanner"><span class="status-icon">✓</span><div><strong id="statusTitle">Есептеуге дайын</strong><p id="statusText">Апталық бағаларды енгізіңіз.</p></div></div>
+
+            <div class="result-breakdown">
+              <div class="result-section-title"><span data-i18n="firstPeriod">Бірінші кезең</span><span>1–7</span></div>
+              <div class="result-row"><span data-i18n="currentTotal1">ТК1 жалпы</span><b id="tk1">—</b></div>
+              <div class="result-row"><span><span data-i18n="boundary1">Межелік бақылау 1</span><em id="rk1Projection"></em></span><b id="rk1">—</b></div>
+              <div class="result-row strong"><span data-i18n="rating1">Рейтинг 1</span><b id="rating1">—</b></div>
+
+              <div class="result-section-title second"><span data-i18n="secondPeriod">Екінші кезең</span><span>8–15</span></div>
+              <div class="result-row"><span data-i18n="currentTotal2">ТК2 жалпы</span><b id="tk2">—</b></div>
+              <div class="result-row"><span><span data-i18n="boundary2">Межелік бақылау 2</span><em id="rk2Projection"></em></span><b id="rk2">—</b></div>
+              <div class="result-row strong"><span data-i18n="rating2">Рейтинг 2</span><b id="rating2">—</b></div>
+            </div>
+
+            <div class="admission-block">
+              <span data-i18n="admission">Рұқсат рейтингі</span><strong id="admissionScore">—</strong>
+            </div>
+
+            <div class="goal-block">
+              <div><span data-i18n="goalTitle">Мақсат: B+ (85)</span><strong id="neededExam">—</strong></div>
+              <p id="goalText" data-i18n="goalEmpty">Бағаларды толтырған соң, қажетті емтихан балы шығады.</p>
+              <div class="goal-meter"><i id="goalMeter"></i></div>
+            </div>
+
+            <button class="calculate-button" id="calculateButton"><span data-i18n="calculate">Нәтижені есептеу</span><span>→</span></button>
+            <p class="rounding-note" data-i18n="rounding">Нәтиже жақын бүтін санға дөңгелектенеді.</p>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <dialog id="scoreDialog" class="modal score-modal">
+      <form method="dialog">
+        <div class="modal-handle"></div>
+        <div class="modal-head"><div><span id="scoreDialogType">Лекция</span><h3><span id="scoreDialogWeek">1</span> <span data-i18n="week">апта</span></h3></div><button class="close-button" value="cancel" aria-label="Жабу">×</button></div>
+        <label class="big-score-input"><input id="scoreValue" type="number" min="0" max="100" inputmode="decimal" placeholder="0–100" /><span>/100</span></label>
+        <div class="quick-label" data-i18n="quickMarks">Жылдам белгілер</div>
+        <div class="quick-grid">
+          <button type="button" data-mark="н.п."><b>н.п.</b><small data-i18n="npDesc">қатыспады</small></button>
+          <button type="button" data-mark="н.б."><b>н.б.</b><small data-i18n="nbDesc">бағаланбады</small></button>
+          <button type="button" data-mark="-"><b>−</b><small data-i18n="minusDesc">0 балл</small></button>
+          <button type="button" data-mark="+"><b>+</b><small data-i18n="plusDesc">100 балл</small></button>
+        </div>
+        <div class="modal-actions"><button type="button" class="ghost-button" id="deleteScore" data-i18n="delete">Өшіру</button><button type="button" class="primary-button" id="saveScore" data-i18n="save">Сақтау</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="uploadDialog" class="modal upload-modal">
+      <div class="modal-handle"></div>
+      <div class="modal-head"><div><span>AI BETA</span><h3 data-i18n="uploadTitle">Platonus скриншоты</h3></div><button class="close-button" data-close="upload" aria-label="Жабу">×</button></div>
+      <div class="upload-explainer"><span>1</span><p data-i18n="uploadStep1">Журнал толық көрінетін скриншотты таңдаңыз.</p><span>2</span><p data-i18n="uploadStep2">ЖИ тапқан бағаларды тексеріп, қолданыңыз.</p></div>
+      <label class="dropzone" id="dropzone">
+        <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" />
+        <img id="uploadPreview" alt="Скриншот алдын ала қарау" />
+        <div id="dropPrompt"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="6" width="24" height="20" rx="4"></rect><circle cx="12" cy="13" r="2"></circle><path d="m7 23 6-6 4 4 3-3 5 5"></path></svg><strong data-i18n="chooseImage">Суретті таңдаңыз</strong><span>PNG, JPG немесе WEBP</span></div>
+      </label>
+      <div class="scan-progress" id="scanProgress"><div><span id="scanStatus">Суретті оқуға дайын</span><b id="scanPercent">0%</b></div><div class="progress-track"><i id="progressBar"></i></div></div>
+      <div class="privacy-note"><svg viewBox="0 0 24 24"><path d="M6 10V8a6 6 0 0 1 12 0v2"></path><rect x="4" y="10" width="16" height="11" rx="2"></rect></svg><span data-i18n="privacy">Скриншот серверге жіберілмейді — браузерде өңделеді.</span></div>
+      <div class="modal-actions"><button class="ghost-button" data-close="upload" data-i18n="cancel">Бас тарту</button><button class="primary-button" id="scanButton" disabled><span data-i18n="scan">Бағаларды тану</span></button></div>
+    </dialog>
+
+    <dialog id="helpDialog" class="modal help-modal">
+      <div class="modal-handle"></div>
+      <div class="modal-head"><div><span data-i18n="guide">Қысқа нұсқаулық</span><h3 data-i18n="howWorks">Қалай жұмыс істейді?</h3></div><button class="close-button" data-close="help" aria-label="Жабу">×</button></div>
+      <div class="guide-list">
+        <article><span>01</span><div><strong data-i18n="guide1Title">Бағаларды енгізіңіз</strong><p data-i18n="guide1Text">Аптаны басып, 0–100 балл немесе н.п., н.б., −, + белгісін таңдаңыз.</p></div></article>
+        <article><span>02</span><div><strong data-i18n="guide2Title">РК мен емтиханды көрсетіңіз</strong><p data-i18n="guide2Text">РК әлі шықпаса, бос қалдырыңыз. Калькулятор болжам жасайды.</p></div></article>
+        <article><span>03</span><div><strong data-i18n="guide3Title">Нәтижені қараңыз</strong><p data-i18n="guide3Text">Рейтинг, қорытынды баға, әріптік баға және GPA бірден жаңарады.</p></div></article>
+      </div>
+      <div class="legend"><div><b>н.п.</b><span data-i18n="npLegend">қатыспады, орташаға кірмейді</span></div><div><b>н.б.</b><span data-i18n="nbLegend">бағаланбады, орташаға кірмейді</span></div><div><b>− / +</b><span data-i18n="pmLegend">0 / 100 балл ретінде есептеледі</span></div></div>
+      <button class="primary-button full-button" data-close="help" data-i18n="understood">Түсінікті, бастайық</button>
+    </dialog>
+
+    <div class="toast" id="toast" role="status"></div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
