@@ -4,9 +4,9 @@ const translations = {
   kk: {
     brandSub: 'Platonus калькуляторы', eyebrow: 'Студентке арналған ақылды құрал', title: 'Бағаңды алдын ала біл.',
     intro: 'Апталық бағаларды енгіз немесе Platonus скриншотын жүкте. Қалғанын біз есептейміз.', semester: '15 апта', savedLocal: 'Құрылғыда сақталады',
-    aiTitle: 'Скриншоттан автоматты толтыру', aiText: 'Журнал скриншотын жүктеңіз — бағалар құрылғыңызда танылады.', uploadButton: 'Скриншот жүктеу',
+    aiTitle: 'Скриншоттан автоматты толтыру', aiText: 'Журнал скриншотын жүктеңіз — бағалар құрылғыңызда танылады.', uploadButton: 'ЖИ арқылы толтыру',
     courseLabel: 'Пән', clear: 'Тазарту', period1: '1-межелік кезең', period2: '2-межелік кезең', weeks: 'апта', addActivity: 'Сабақ түрін қосу',
-    rkHint: 'Баға әлі жоқ болса, бос қалдырыңыз — болжам автоматты есептеледі.', examLabel: 'Емтихан бағасы', examQuestion: 'Емтиханнан қанша алуды жоспарлайсыз?',
+    rkHint: 'Қойылмаса, автоматты болжам қолданылады.', boundaryGrades: 'Межелік бақылаулар', selectWeek: 'Алдымен аптаны таңдаңыз', selectHint: 'Сосын бағаны немесе белгіні басыңыз', examLabel: 'Емтихан бағасы', examQuestion: 'Емтиханнан қанша алуды жоспарлайсыз?',
     formulaSettings: 'Формула баптаулары', profileTitle: 'Жетісу университеті профилі', profileText: 'Рейтингте ТК — 60%, межелік бақылау — 40%. Қорытындыда рұқсат рейтингі — 60%, емтихан — 40%.',
     currentWeight: 'ТК салмағы', rkWeight: 'РК салмағы', admissionWeight: 'Рұқсат рейтингі', examWeight: 'Емтихан',
     settingsFoot: 'Ескерту: Platonus формуласы ЖОО мен силлабусқа қарай өзгеруі мүмкін. Күмән болса, эдвайзерден нақтылаңыз.',
@@ -27,9 +27,9 @@ const translations = {
   ru: {
     brandSub: 'Калькулятор Platonus', eyebrow: 'Умный инструмент для студента', title: 'Узнай оценку заранее.',
     intro: 'Введите оценки по неделям или загрузите скриншот Platonus. Остальное мы посчитаем.', semester: '15 недель', savedLocal: 'Хранится на устройстве',
-    aiTitle: 'Автозаполнение по скриншоту', aiText: 'Загрузите скриншот журнала — оценки распознаются на вашем устройстве.', uploadButton: 'Загрузить скриншот',
+    aiTitle: 'Автозаполнение по скриншоту', aiText: 'Загрузите скриншот журнала — оценки распознаются на вашем устройстве.', uploadButton: 'Заполнить с помощью ИИ',
     courseLabel: 'Дисциплина', clear: 'Очистить', period1: '1-й рубежный период', period2: '2-й рубежный период', weeks: 'недели', addActivity: 'Добавить вид занятия',
-    rkHint: 'Если оценки ещё нет, оставьте поле пустым — прогноз посчитается автоматически.', examLabel: 'Оценка за экзамен', examQuestion: 'Сколько вы планируете получить на экзамене?',
+    rkHint: 'Если оценки нет, используется автоматический прогноз.', boundaryGrades: 'Рубежные контроли', selectWeek: 'Сначала выберите неделю', selectHint: 'Затем нажмите оценку или отметку', examLabel: 'Оценка за экзамен', examQuestion: 'Сколько вы планируете получить на экзамене?',
     formulaSettings: 'Настройки формулы', profileTitle: 'Профиль Жетысуского университета', profileText: 'В рейтинге ТК — 60%, рубежный контроль — 40%. В итоговой: рейтинг допуска — 60%, экзамен — 40%.',
     currentWeight: 'Вес ТК', rkWeight: 'Вес РК', admissionWeight: 'Рейтинг допуска', examWeight: 'Экзамен',
     settingsFoot: 'Важно: формула Platonus может отличаться в зависимости от вуза и силлабуса. При сомнениях уточните у эдвайзера.',
@@ -56,8 +56,9 @@ const defaultActivities = [
 ];
 
 const state = {
-  lang: 'kk', period: 1, course: 'AR/VR технологиялары', exam: 85,
-  rk: [null, null], weights: { current: 60, rk: 40, admission: 60, exam: 40 },
+  lang: 'kk', period: 1, course: '', exam: 85,
+  rk: [null, null], weights: { current: 50, rk: 50, admission: 60, exam: 40 },
+  activityWeights: { lecture: 20, practice: 50, srsp: 30 },
   activities: structuredClone(defaultActivities), activeScore: null, uploadFile: null
 };
 
@@ -73,6 +74,8 @@ function loadState() {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (!saved) return;
     Object.assign(state, saved, { activeScore: null, uploadFile: null });
+    state.weights = { current: 50, rk: 50, admission: 60, exam: 40 };
+    state.activityWeights = { lecture: 20, practice: 50, srsp: 30 };
     state.activities = saved.activities?.length ? saved.activities.map(a => ({ ...a, scores: [...a.scores, ...Array(15).fill(null)].slice(0, 15) })) : structuredClone(defaultActivities);
   } catch (_) {}
 }
@@ -110,59 +113,56 @@ function average(values) {
 }
 
 function currentTotal(period) {
-  const avgs = state.activities.map(a => average(periodValues(a, period))).filter(v => v != null);
-  return average(avgs);
+  const available = state.activities.map(a => ({
+    value: average(periodValues(a, period)),
+    weight: state.activityWeights[a.id] ?? 0
+  })).filter(item => item.value != null && item.weight > 0);
+  const totalWeight = available.reduce((sum, item) => sum + item.weight, 0);
+  return totalWeight ? available.reduce((sum, item) => sum + item.value * item.weight, 0) / totalWeight : null;
 }
 
 function renderActivities() {
   const list = $('#activityList');
-  const start = state.period === 1 ? 0 : 7;
-  const end = state.period === 1 ? 7 : 15;
   list.innerHTML = state.activities.map(activity => {
-    const values = periodValues(activity, state.period);
-    const avg = average(values);
+    const values1 = periodValues(activity, 1);
+    const values2 = periodValues(activity, 2);
+    const avg1 = average(values1), avg2 = average(values2);
     const name = activity.customName || t(activity.nameKey);
-    const weeks = activity.scores.slice(start, end).map((value, offset) => {
+    const weekButtons = (start, end) => activity.scores.slice(start, end).map((value, offset) => {
       const week = start + offset + 1;
       const isMark = typeof value === 'string';
-      return `<button class="week-button ${value == null ? 'empty' : 'filled'} ${isMark ? 'mark' : ''}" data-activity="${activity.id}" data-week="${week}"><small>${week} ${state.lang === 'kk' ? 'апта' : 'нед.'}</small><b>${value == null ? '＋' : value}</b></button>`;
+      const selected = state.activeScore?.activityId === activity.id && state.activeScore?.week === week;
+      return `<button class="week-button ${value == null ? 'empty' : 'filled'} ${isMark ? 'mark' : ''} ${selected ? 'selected' : ''}" data-activity="${activity.id}" data-week="${week}" aria-pressed="${selected}"><small>${week}</small><b>${value == null ? '—' : value}</b></button>`;
     }).join('');
     return `<article class="activity-card panel">
-      <div class="activity-head"><div class="activity-name-wrap"><span class="activity-icon">${activity.icon || '◇'}</span><span class="activity-name">${name}</span></div><div class="activity-average"><span>${t('avg')}</span><b>${display(avg)}</b></div></div>
-      <div class="weeks-grid">${weeks}</div>
-      <div class="activity-meta"><span>${values.length} ${t('entered')}</span>${state.activities.length > 1 ? `<button data-remove="${activity.id}">${t('remove')}</button>` : ''}</div>
+      <div class="activity-head"><div class="activity-name-wrap"><span class="activity-icon">${activity.icon || '◇'}</span><span class="activity-name">${name}</span><span class="activity-weight">${state.activityWeights[activity.id] ?? 0}%</span></div><div class="dual-average"><span>ТК1 <b>${display(avg1)}</b></span><span>ТК2 <b>${display(avg2)}</b></span></div></div>
+      <div class="week-line first-line">${weekButtons(0, 7)}</div>
+      <div class="week-line second-line">${weekButtons(7, 15)}</div>
     </article>`;
   }).join('');
-  $$('.week-button', list).forEach(btn => btn.addEventListener('click', () => openScoreDialog(btn.dataset.activity, Number(btn.dataset.week))));
-  $$('[data-remove]', list).forEach(btn => btn.addEventListener('click', () => {
-    state.activities = state.activities.filter(a => a.id !== btn.dataset.remove); renderActivities(); calculate(); saveState();
-  }));
+  $$('.week-button', list).forEach(btn => btn.addEventListener('click', () => selectScore(btn.dataset.activity, Number(btn.dataset.week))));
 }
 
 function updatePeriodUI() {
-  $$('.period-tab').forEach(tab => tab.classList.toggle('active', Number(tab.dataset.period) === state.period));
-  $('#rkLabel').textContent = state.period === 1 ? t('rk1') : t('rk2');
-  $('#rkInput').value = state.rk[state.period - 1] ?? '';
+  $('#rkInput1').value = state.rk[0] ?? '';
+  $('#rkInput2').value = state.rk[1] ?? '';
 }
 
-function openScoreDialog(activityId, week) {
+function selectScore(activityId, week) {
   state.activeScore = { activityId, week };
   const activity = state.activities.find(a => a.id === activityId);
-  $('#scoreDialogType').textContent = activity.customName || t(activity.nameKey);
-  $('#scoreDialogWeek').textContent = week;
   const value = activity.scores[week - 1];
-  $('#scoreValue').value = typeof value === 'number' ? value : '';
-  $$('.week-button').forEach(b => b.classList.remove('selected'));
-  $(`.week-button[data-activity="${activityId}"][data-week="${week}"]`)?.classList.add('selected');
-  $('#scoreDialog').showModal();
-  setTimeout(() => $('#scoreValue').focus(), 80);
+  $('#inlineScore').value = typeof value === 'number' ? value : '';
+  $('#selectionTitle').textContent = `${activity.customName || t(activity.nameKey)} · ${week} ${t('week')}`;
+  renderActivities();
+  saveState();
 }
 
 function setActiveScore(value) {
-  if (!state.activeScore) return;
+  if (!state.activeScore) return toast(t('selectWeek'));
   const activity = state.activities.find(a => a.id === state.activeScore.activityId);
   activity.scores[state.activeScore.week - 1] = value;
-  $('#scoreDialog').close();
+  $('#inlineScore').value = typeof value === 'number' ? value : '';
   renderActivities(); calculate(); saveState(); toast(t('saved'));
 }
 
@@ -296,30 +296,20 @@ async function scanImage() {
 
 function bindEvents() {
   $('#langSwitch').addEventListener('click', () => { state.lang = state.lang === 'kk' ? 'ru' : 'kk'; translatePage(); saveState(); });
-  $$('.period-tab').forEach(tab => tab.addEventListener('click', () => { state.period = Number(tab.dataset.period); updatePeriodUI(); renderActivities(); saveState(); }));
-  $('#courseName').addEventListener('input', e => { state.course = e.target.value; saveState(); });
-  $('#rkInput').addEventListener('input', e => { const v = e.target.value; state.rk[state.period - 1] = v === '' ? null : clamp(v); calculate(); saveState(); });
+  $('#rkInput1').addEventListener('input', e => { const v = e.target.value; state.rk[0] = v === '' ? null : clamp(v); calculate(); saveState(); });
+  $('#rkInput2').addEventListener('input', e => { const v = e.target.value; state.rk[1] = v === '' ? null : clamp(v); calculate(); saveState(); });
   $('#examRange').addEventListener('input', e => { state.exam = clamp(e.target.value); $('#examInput').value = state.exam; calculate(); saveState(); });
   $('#examInput').addEventListener('input', e => { state.exam = clamp(e.target.value); $('#examRange').value = state.exam; calculate(); saveState(); });
   ['current', 'rk', 'admission', 'exam'].forEach(key => $(`#${key}Weight`).addEventListener('input', e => { state.weights[key] = clamp(e.target.value); calculate(); saveState(); }));
   $('#openUpload').addEventListener('click', () => $('#uploadDialog').showModal());
-  $('#helpButton').addEventListener('click', () => $('#helpDialog').showModal());
   $$('[data-close]').forEach(btn => btn.addEventListener('click', () => $(`#${btn.dataset.close}Dialog`).close()));
   $$('.mini-help').forEach(btn => btn.addEventListener('click', () => toast(t(`${btn.dataset.tip}Tip`))));
-  $$('.quick-grid button').forEach(btn => btn.addEventListener('click', () => setActiveScore(btn.dataset.mark)));
-  $('#saveScore').addEventListener('click', () => { const raw = $('#scoreValue').value; if (raw !== '') setActiveScore(clamp(raw)); });
-  $('#scoreValue').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('#saveScore').click(); } });
-  $('#deleteScore').addEventListener('click', () => setActiveScore(null));
-  $('#scoreDialog').addEventListener('close', () => $$('.week-button').forEach(b => b.classList.remove('selected')));
-  $('#addActivity').addEventListener('click', () => {
-    const name = window.prompt(t('addPrompt')); if (!name?.trim()) return;
-    state.activities.push({ id: `custom-${Date.now()}`, customName: name.trim(), nameKey: 'laboratory', icon: '△', scores: Array(15).fill(null) });
-    renderActivities(); calculate(); saveState();
+  $$('[data-quick-mark]').forEach(btn => btn.addEventListener('click', () => setActiveScore(btn.dataset.quickMark)));
+  $('#inlineScore').addEventListener('input', e => {
+    if (!state.activeScore || e.target.value === '') return;
+    setActiveScore(clamp(e.target.value));
   });
-  $('#resetButton').addEventListener('click', () => {
-    state.activities.forEach(a => a.scores = Array(15).fill(null)); state.rk = [null, null];
-    $('#rkInput').value = ''; renderActivities(); calculate(); saveState(); toast(t('cleared'));
-  });
+  $('#clearCell').addEventListener('click', () => setActiveScore(null));
   $('#calculateButton').addEventListener('click', () => { calculate(); $('.result-card').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
   const fileInput = $('#fileInput'), dropzone = $('#dropzone');
   const handleFile = file => {
@@ -336,12 +326,8 @@ function bindEvents() {
 }
 
 loadState();
-$('#courseName').value = state.course;
 $('#examRange').value = state.exam;
 $('#examInput').value = state.exam;
 Object.entries(state.weights).forEach(([key, value]) => $(`#${key}Weight`).value = value);
 bindEvents();
 translatePage();
-if (!localStorage.getItem('baga-onboarded')) {
-  setTimeout(() => { $('#helpDialog').showModal(); localStorage.setItem('baga-onboarded', '1'); }, 500);
-}
