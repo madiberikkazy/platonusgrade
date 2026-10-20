@@ -15,9 +15,9 @@ const translations = {
     admission: 'Рұқсат рейтингі', goalTitle: 'Мақсат: B+ (85)', goalEmpty: 'Бағаларды толтырған соң, қажетті емтихан балы шығады.', calculate: 'Нәтижені есептеу', rounding: 'Нәтиже жақын бүтін санға дөңгелектенеді.',
     week: 'апта', quickMarks: 'Жылдам белгілер', npDesc: 'есептелмейді', nbDesc: '0 балл', minusDesc: '0 балл', plusDesc: '100 балл', delete: 'Өшіру', save: 'Сақтау',
     uploadTitle: 'Platonus скриншоты', uploadStep1: 'Журнал толық көрінетін скриншотты таңдаңыз.', uploadStep2: 'ЖИ тапқан бағаларды тексеріп, қолданыңыз.', chooseImage: 'Суретті таңдаңыз', privacy: 'Скриншот серверге жіберілмейді — браузерде өңделеді.', cancel: 'Бас тарту', scan: 'Бағаларды тану',
-    guide: 'Қысқа нұсқаулық', howWorks: 'Қалай жұмыс істейді?', guide1Title: 'Бағаларды енгізіңіз', guide1Text: 'Аптаны басып, 0–100 балл немесе н.п., н.б., н, н.я., ж белгісін таңдаңыз.',
+    guide: 'Қысқа нұсқаулық', howWorks: 'Қалай жұмыс істейді?', guide1Title: 'Бағаларды енгізіңіз', guide1Text: 'Аптаны басып, 0–100 балл немесе белгіні таңдаңыз: ж / н / a — 0 балл; е.а. / н.п. / n.c. — есептелмейді.',
     guide2Title: 'РК мен емтиханды көрсетіңіз', guide2Text: 'РК әлі шықпаса, бос қалдырыңыз. Калькулятор болжам жасайды.', guide3Title: 'Нәтижені қараңыз', guide3Text: 'Рейтинг, қорытынды баға, әріптік баға және GPA бірден жаңарады.',
-    npLegend: 'қарастырылмаған, орташаға кірмейді', nbLegend: 'н.б., н, н.я., ж — 0 балл', pmLegend: '0 / 100 балл ретінде есептеледі', understood: 'Түсінікті, бастайық',
+    npLegend: 'есептелмейді, орташаның бөлгішіне кірмейді', nbLegend: '0 балл ретінде есептеледі', pmLegend: '0 / 100 балл ретінде есептеледі', understood: 'Түсінікті, бастайық',
     lecture: 'Лекция', practice: 'Практика', srsp: 'СРСП', laboratory: 'Зертханалық', avg: 'Орташа', entered: 'баға енгізілді', remove: 'Жою',
     rk1: 'Межелік бақылау 1', rk2: 'Межелік бақылау 2', forecast: 'болжам', ready: 'Есептеуге дайын', enterGrades: 'Апталық бағаларды енгізіңіз.',
     admitted: 'Емтиханға жіберіледі', admissionGood: 'Рұқсат рейтингі 50 балдан жоғары.', notAdmitted: 'Рұқсат рейтингі жеткіліксіз', admissionLow: 'Емтиханға рұқсат алу үшін кемінде 50 балл қажет.',
@@ -38,9 +38,9 @@ const translations = {
     admission: 'Рейтинг допуска', goalTitle: 'Цель: B+ (85)', goalEmpty: 'После заполнения оценок покажем нужный балл за экзамен.', calculate: 'Рассчитать результат', rounding: 'Результат округляется до ближайшего целого.',
     week: 'неделя', quickMarks: 'Быстрые отметки', npDesc: 'не предусмотрено', nbDesc: '0 баллов', minusDesc: '0 баллов', plusDesc: '100 баллов', delete: 'Удалить', save: 'Сохранить',
     uploadTitle: 'Скриншот Platonus', uploadStep1: 'Выберите скриншот, где полностью виден журнал.', uploadStep2: 'Проверьте распознанные ИИ оценки и примените их.', chooseImage: 'Выберите изображение', privacy: 'Скриншот не отправляется на сервер — обработка идёт в браузере.', cancel: 'Отмена', scan: 'Распознать оценки',
-    guide: 'Краткая инструкция', howWorks: 'Как это работает?', guide1Title: 'Введите оценки', guide1Text: 'Нажмите на неделю и выберите балл 0–100 или отметку н.п., н.б., н, н.я., ж.',
+    guide: 'Краткая инструкция', howWorks: 'Как это работает?', guide1Title: 'Введите оценки', guide1Text: 'Нажмите на неделю и выберите балл 0–100 или отметку: ж / н / a — 0 баллов; е.а. / н.п. / n.c. — не учитывается.',
     guide2Title: 'Укажите РК и экзамен', guide2Text: 'Если РК ещё нет, оставьте поле пустым. Калькулятор сделает прогноз.', guide3Title: 'Смотрите результат', guide3Text: 'Рейтинги, итоговая оценка, буква и GPA обновляются сразу.',
-    npLegend: 'не предусмотрено, не входит в среднее', nbLegend: 'н.б., н, н.я., ж — это 0 баллов', pmLegend: 'считаются как 0 / 100 баллов', understood: 'Понятно, начнём',
+    npLegend: 'не учитывается и не входит в делитель среднего', nbLegend: 'считается как 0 баллов', pmLegend: 'считаются как 0 / 100 баллов', understood: 'Понятно, начнём',
     lecture: 'Лекция', practice: 'Практика', srsp: 'СРСП', laboratory: 'Лабораторная', avg: 'Среднее', entered: 'оценок введено', remove: 'Удалить',
     rk1: 'Рубежный контроль 1', rk2: 'Рубежный контроль 2', forecast: 'прогноз', ready: 'Готово к расчёту', enterGrades: 'Введите оценки по неделям.',
     admitted: 'Допуск к экзамену есть', admissionGood: 'Рейтинг допуска выше 50 баллов.', notAdmitted: 'Рейтинга недостаточно', admissionLow: 'Для допуска к экзамену нужно не менее 50 баллов.',
@@ -98,10 +98,11 @@ function translatePage() {
 
 function scoreToNumber(value) {
   if (typeof value === 'number') return clamp(value);
-  if (value === 'н.п.') return null;
-  if (['н.б.', 'н', 'н.я.', 'ж'].includes(value)) return 0;
-  if (value === '+') return 100;
-  if (value === '-') return 0;
+  const mark = String(value).trim().toLowerCase().replace(/\s+/g, '');
+  if (['е.а.', 'н.п.', 'n.c.'].includes(mark)) return null;
+  if (['ж', 'н', 'a', 'н.б.', 'н.я.'].includes(mark)) return 0;
+  if (mark === '+') return 100;
+  if (mark === '-') return 0;
   return null;
 }
 
@@ -246,11 +247,14 @@ function normalizeOCRScoreToken(raw) {
   const token = raw
     .toLowerCase()
     .replace(/^[^\p{L}\p{N}+-]+|[^\p{L}\p{N}.+-]+$/gu, '');
+  if (/^[еe]\.?[аa]\.?$/iu.test(token)) return 'е.а.';
   if (/^[нhn]\.?[пpn]\.?$/iu.test(token)) return 'н.п.';
+  if (/^[нn]\.?[сc]\.?$/iu.test(token)) return 'n.c.';
   if (/^[нhn]\.?[бb]\.?$/iu.test(token)) return 'н.б.';
   if (/^[нhn]\.?[я]\.?$/iu.test(token)) return 'н.я.';
   if (/^[нn]\.?$/iu.test(token)) return 'н';
   if (/^ж\.?$/iu.test(token)) return 'ж';
+  if (/^[aа]\.?$/iu.test(token)) return 'a';
   if (/^[oо]$/iu.test(token)) return 0;
   if (/^\+$/u.test(token)) return '+';
   if (/^-$/u.test(token)) return '-';
@@ -260,7 +264,7 @@ function normalizeOCRScoreToken(raw) {
 
 function extractOCRScoreTokens(line) {
   const compactMarks = line
-    .replace(/([нhn])\s*\.\s*([пбяpbn])\s*\.?/giu, '$1.$2.')
+    .replace(/([еeнhn])\s*\.\s*([аaпбяpbnсc])\s*\.?/giu, '$1.$2.')
     .replace(/,/g, '.');
   return compactMarks.split(/\s+/).map(normalizeOCRScoreToken).filter(value => value != null);
 }
