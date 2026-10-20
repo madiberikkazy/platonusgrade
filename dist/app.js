@@ -242,44 +242,73 @@ function toast(message) {
   clearTimeout(toast.timer); toast.timer = setTimeout(() => el.classList.remove('show'), 2400);
 }
 
+function normalizeOCRScoreToken(raw) {
+  const token = raw
+    .toLowerCase()
+    .replace(/^[^\p{L}\p{N}+-]+|[^\p{L}\p{N}.+-]+$/gu, '');
+  if (/^[нhn]\.?[пpn]\.?$/iu.test(token)) return 'н.п.';
+  if (/^[нhn]\.?[бb]\.?$/iu.test(token)) return 'н.б.';
+  if (/^[нhn]\.?[я]\.?$/iu.test(token)) return 'н.я.';
+  if (/^[нn]\.?$/iu.test(token)) return 'н';
+  if (/^ж\.?$/iu.test(token)) return 'ж';
+  if (/^[oо]$/iu.test(token)) return 0;
+  if (/^\+$/u.test(token)) return '+';
+  if (/^-$/u.test(token)) return '-';
+  if (/^(?:100|[1-9]?\d)(?:\.\d+)?$/u.test(token)) return Number(token);
+  return null;
+}
+
+function extractOCRScoreTokens(line) {
+  const compactMarks = line
+    .replace(/([нhn])\s*\.\s*([пбяpbn])\s*\.?/giu, '$1.$2.')
+    .replace(/,/g, '.');
+  return compactMarks.split(/\s+/).map(normalizeOCRScoreToken).filter(value => value != null);
+}
+
 function parseScoresFromOCR(text) {
   const clean = text.replace(/[|]/g, 'I').replace(/,/g, '.');
-  const blocks = [...clean.matchAll(/(?:AT|АТ)\s*[\w\d-]*-(SRSP|СРСП|L|P|Р)([\s\S]*?)(?=(?:AT|АТ)\s*[\w\d-]*-(?:SRSP|СРСП|L|P|Р)|$)/gi)];
+  const lines = clean.split(/\n+/).map(line => line.trim()).filter(Boolean);
+  const headers = [];
+
+  // Platonus course prefixes differ between universities (AT, PYaJ, etc.).
+  // The stable part is the activity suffix at the end of the course code.
+  lines.forEach((line, index) => {
+    const match = line.match(/\d[\d-]*-\s*(SRSP|СРСП|L|Л|P|Р|П)\s*(?:[I|)\].,]*)$/iu);
+    if (match) headers.push({ index, suffix: match[1].toUpperCase() });
+  });
+
   let found = 0;
   const parsedByActivity = new Map();
-  for (const match of blocks) {
-    const suffix = match[1].toUpperCase();
-    const id = suffix === 'L' ? 'lecture' : (suffix === 'SRSP' || suffix === 'СРСП') ? 'srsp' : 'practice';
+  headers.forEach((header, headerIndex) => {
+    const suffix = header.suffix;
+    const id = suffix === 'L' || suffix === 'Л' ? 'lecture' : (suffix === 'SRSP' || suffix === 'СРСП') ? 'srsp' : 'practice';
     const activity = state.activities.find(a => a.id === id);
-    if (!activity) continue;
+    if (!activity) return;
     const parsed = parsedByActivity.get(id) || { scores: Array(15).fill(null), count: 0 };
     parsedByActivity.set(id, parsed);
-    const lines = match[2].split(/\n+/).map(s => s.trim()).filter(Boolean);
-    const scoreLines = lines.filter(line => /(?:оценка|баға)/i.test(line));
-    scoreLines.slice(0, 2).forEach((line, rowIndex) => {
-      let tokens = line.replace(/^.*?(?:оценка|баға)\s*/i, '').match(/н\.?\s*[пбя]\.?|[нnж]\.?|(?:100|[1-9]?\d)(?:\.\d+)?|[OoОо]|[+-]/gi) || [];
-      tokens = tokens.map(x => x.replace(/\s/g, '').toLowerCase());
+    const end = headers[headerIndex + 1]?.index ?? lines.length;
+    const blockLines = lines.slice(header.index + 1, end);
+    const scoreLines = blockLines.map(line => {
+      const tokens = extractOCRScoreTokens(line);
+      const hasGradeLabel = /оценка|ба[ғг]а|(?:^|\s)b[aа][grfғ][aа](?=\s|:)/iu.test(line);
+      const hasTkAverage = /\b\d{1,3}\.\d{2}\s*$/u.test(line);
+      return { line, tokens, hasTkAverage, isScore: hasGradeLabel || hasTkAverage };
+    }).filter(item => item.isScore);
+
+    scoreLines.slice(0, 2).forEach(({ tokens: rawTokens, hasTkAverage }, rowIndex) => {
       // Platonus appends the period TK average (for example 85.00 or 10.00)
       // after weekly grades. It is a result, not the next week's score.
-      if (tokens.length && /\.\d+$/.test(tokens[tokens.length - 1])) tokens.pop();
+      let tokens = hasTkAverage ? rawTokens.slice(0, -1) : rawTokens;
       const limit = rowIndex === 0 ? 7 : 8;
       if (tokens.length > limit) tokens = tokens.slice(0, limit);
       tokens.forEach((token, i) => {
-        const normalized = /^н\.?п/.test(token) ? 'н.п.'
-          : /^н\.?б/.test(token) ? 'н.б.'
-          : /^н\.?я/.test(token) ? 'н.я.'
-          : /^[нn]\.?$/i.test(token) ? 'н'
-          : /^ж$/i.test(token) ? 'ж'
-          : token === '+' || token === '-' ? token
-          : /^[oо]$/i.test(token) ? 0
-          : Number(token);
-        if (typeof normalized === 'number' && (normalized < 0 || normalized > 100)) return;
-        parsed.scores[(rowIndex === 0 ? 0 : 7) + i] = normalized;
+        if (typeof token === 'number' && (token < 0 || token > 100)) return;
+        parsed.scores[(rowIndex === 0 ? 0 : 7) + i] = token;
         parsed.count++;
         found++;
       });
     });
-  }
+  });
   parsedByActivity.forEach((parsed, id) => {
     if (!parsed.count) return;
     const activity = state.activities.find(a => a.id === id);
