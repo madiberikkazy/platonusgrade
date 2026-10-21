@@ -111,11 +111,18 @@
       <div class="modal-handle"></div>
       <div class="modal-head"><div><h3 data-i18n="uploadTitle">Platonus скриншоты</h3></div><button class="close-button" data-close="upload" aria-label="Жабу">×</button></div>
       <div class="upload-explainer"><span>1</span><p data-i18n="uploadStep1">Журнал толық көрінетін скриншотты таңдаңыз.</p><span>2</span><p data-i18n="uploadStep2">ЖИ тапқан бағаларды тексеріп, қолданыңыз.</p></div>
-      <label class="dropzone" id="dropzone">
-        <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" />
-        <img id="uploadPreview" alt="Скриншот алдын ала қарау" />
-        <div id="dropPrompt"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="6" width="24" height="20" rx="4"></rect><circle cx="12" cy="13" r="2"></circle><path d="m7 23 6-6 4 4 3-3 5 5"></path></svg><strong data-i18n="chooseImage">Суретті таңдаңыз</strong><span>PNG, JPG немесе WEBP</span></div>
-      </label>
+      <div class="upload-picker">
+        <label class="dropzone" id="dropzone">
+          <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" />
+          <img id="uploadPreview" alt="Скриншот алдын ала қарау" />
+          <div id="dropPrompt"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="6" width="24" height="20" rx="4"></rect><circle cx="12" cy="13" r="2"></circle><path d="m7 23 6-6 4 4 3-3 5 5"></path></svg><strong data-i18n="chooseImage">Суретті таңдаңыз</strong><span>PNG, JPG немесе WEBP</span></div>
+        </label>
+        <a class="upload-example" href="./assets/platonus-example.webp" target="_blank" rel="noopener" aria-label="Platonus скриншотының үлгісін ашу">
+          <img src="./assets/platonus-example.webp" alt="Platonus журнал скриншотының үлгісі" />
+          <strong data-i18n="exampleLabel">Үлгі</strong>
+          <span data-i18n="openExample">Үлкейтіп көру</span>
+        </a>
+      </div>
       <div class="scan-progress" id="scanProgress"><div><span id="scanStatus">Суретті оқуға дайын</span><b id="scanPercent">0%</b></div><div class="progress-track"><i id="progressBar"></i></div></div>
       <div class="privacy-note"><svg viewBox="0 0 24 24"><path d="M6 10V8a6 6 0 0 1 12 0v2"></path><rect x="4" y="10" width="16" height="11" rx="2"></rect></svg><span data-i18n="privacy">Скриншот серверге жіберілмейді — браузерде өңделеді.</span></div>
       <div class="modal-actions"><button class="ghost-button" data-close="upload" data-i18n="cancel">Бас тарту</button><button class="primary-button" id="scanButton" disabled><span data-i18n="scan">Бағаларды тану</span></button></div>
